@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="YH Ecosystem — Master Control Protocol. 3-Sector AI Agent Execution Engine for Yoga, Real Estate, and Marketing." />
+  <title>YH Ecosystem — Daddy Console</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">YH</div>
+        <div>
+          <div class="sidebar-logo-text">YH Ecosystem</div>
+          <div class="sidebar-logo-sub">Master Control</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Command</div>
+      <div class="nav-item active" data-tab="overview">
+        <span class="nav-item-icon">📊</span> Overview
+      </div>
+      <div class="nav-item" data-tab="agents">
+        <span class="nav-item-icon">🤖</span> Agents
+        <span class="nav-badge" id="agent-count">0</span>
+      </div>
+      <div class="nav-item" data-tab="revenue">
+        <span class="nav-item-icon">💰</span> Revenue
+      </div>
+      <div class="nav-item" data-tab="workflows">
+        <span class="nav-item-icon">⚡</span> Workflows
+        <span class="nav-badge" id="workflow-count">0</span>
+      </div>
+
+      <div class="nav-section-title">CRM</div>
+      <div class="nav-item" data-tab="leads">
+        <span class="nav-item-icon">📋</span> Leads
+        <span class="nav-badge" id="lead-count">0</span>
+      </div>
+      <div class="nav-item" data-tab="deals">
+        <span class="nav-item-icon">🤝</span> Deals
+      </div>
+
+      <div class="nav-section-title">Sectors</div>
+      <div class="nav-item" data-tab="sectors">
+        <span class="nav-item-icon">🏢</span> Sector Hub
+        <span class="nav-badge" id="sector-count">0</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-status">
+        <span class="status-dot"></span>
+        <span>System Operational</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="main-content">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="page-header-left">
+        <div class="header-badges">
+          <span class="badge badge-purple">🛡️ DADDY CONSOLE</span>
+          <span class="badge badge-gold">🔒 LEVEL 10 CLEARANCE</span>
+        </div>
+        <h1 class="page-title" id="page-title">Master Control Protocol</h1>
+        <p class="page-subtitle">3-Sector Execution Engine: Yoga • Real Estate • Marketing</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline" onclick="refreshAll()" id="refresh-btn">
+          🔄 Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== OVERVIEW TAB ===== -->
+    <div class="tab-content active" id="tab-overview">
+      <div class="kpi-grid" id="kpi-grid"></div>
+      <div class="card" style="margin-bottom:28px">
+        <div class="card-header">
+          <span class="card-title">Sector Performance</span>
+        </div>
+        <div class="card-body">
+          <div class="sector-grid" id="sector-grid"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Action Log</span>
+        </div>
+        <div class="card-body">
+          <div class="action-log" id="action-log">
+            <div class="log-entry" style="color:var(--text-muted)">Waiting for actions...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AGENTS TAB ===== -->
+    <div class="tab-content" id="tab-agents">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Global Agent Registry (<span id="agents-total">0</span>)</span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Agent</th>
+                <th>Type</th>
+                <th>Sector</th>
+                <th>Org</th>
+                <th>Status</th>
+                <th>Tools</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="agents-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REVENUE TAB ===== -->
+    <div class="tab-content" id="tab-revenue">
+      <div class="revenue-grid" id="revenue-grid"></div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Top Deals</span>
+        </div>
+        <div class="card-body" id="top-deals"></div>
+      </div>
+    </div>
+
+    <!-- ===== WORKFLOWS TAB ===== -->
+    <div class="tab-content" id="tab-workflows">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Workflow Engine</span>
+          <span class="badge badge-green">⚡ ONLINE</span>
+        </div>
+        <div class="card-body" id="workflows-body">
+          <div class="workflow-card">
+            <div class="workflow-info">
+              <h4>⚡ Workflow Engine</h4>
+              <p>Trigger → Logic → Action → Result</p>
+            </div>
+          </div>
+          <div class="integrations-info">
+            <strong>Active Integrations:</strong> WhatsApp API (stub) • Razorpay (stub) • SMTP Email (stub) • Calendar/Booking (live)<br/>
+            <span style="font-size:12px">Add API keys in .env to activate live mode.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== LEADS TAB ===== -->
+    <div class="tab-content" id="tab-leads">
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-header">
+          <span class="card-title">Add Lead</span>
+        </div>
+        <div class="card-body">
+          <form id="lead-form" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;align-items:end">
+            <div>
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">Org ID</label>
+              <select id="lead-org" style="width:100%;padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-xs);color:var(--text-primary);font-family:inherit;font-size:13px"></select>
+            </div>
+            <div>
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">Name</label>
+              <input type="text" id="lead-name" placeholder="Lead name" required style="width:100%;padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-xs);color:var(--text-primary);font-family:inherit;font-size:13px" />
+            </div>
+            <div>
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">Phone</label>
+              <input type="text" id="lead-phone" placeholder="+91..." style="width:100%;padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-xs);color:var(--text-primary);font-family:inherit;font-size:13px" />
+            </div>
+            <div>
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">Email</label>
+              <input type="email" id="lead-email" placeholder="email@..." style="width:100%;padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-xs);color:var(--text-primary);font-family:inherit;font-size:13px" />
+            </div>
+            <div>
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">Source</label>
+              <select id="lead-source" style="width:100%;padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-xs);color:var(--text-primary);font-family:inherit;font-size:13px">
+                <option value="manual">Manual</option>
+                <option value="whatsapp">WhatsApp</option>
+                <option value="website">Website</option>
+                <option value="ad">Ad Campaign</option>
+                <option value="referral">Referral</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">+ Add Lead</button>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">All Leads</span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Source</th>
+                <th>Score</th>
+                <th>Status</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody id="leads-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DEALS TAB ===== -->
+    <div class="tab-content" id="tab-deals">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Deal Pipeline</span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Deal</th>
+                <th>Lead</th>
+                <th>Stage</th>
+                <th>Value</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="deals-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SECTORS TAB ===== -->
+    <div class="tab-content" id="tab-sectors">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Sector Templates</span>
+        </div>
+        <div class="card-body" id="sector-templates"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
