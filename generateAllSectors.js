@@ -4,7 +4,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const root = join(__dirname, '..', '..');
+const root = __dirname;
 
 // Common workflow templates by business type
 const WORKFLOW_PRESETS = {
