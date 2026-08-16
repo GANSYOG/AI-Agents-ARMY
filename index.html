@@ -26,6 +26,9 @@
 
     <nav class="sidebar-nav">
       <div class="nav-section-title">Command</div>
+      <div class="nav-item" data-tab="simulation">
+        <span class="nav-item-icon">🚀</span> Live Simulation
+      </div>
       <div class="nav-item active" data-tab="overview">
         <span class="nav-item-icon">📊</span> Overview
       </div>
@@ -82,6 +85,28 @@
         <button class="btn btn-outline" onclick="refreshAll()" id="refresh-btn">
           🔄 Refresh
         </button>
+      </div>
+    </div>
+
+    <!-- ===== LIVE SIMULATION TAB ===== -->
+    <div class="tab-content" id="tab-simulation">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Hire Company & Live Agent Feed</span>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;gap:16px;margin-bottom:20px">
+            <input type="text" id="new-company-name" placeholder="Company Name" style="flex:1;padding:10px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);">
+            <button class="btn btn-primary" onclick="hireCompany()">🏢 Hire Company (Create Org)</button>
+          </div>
+          <div style="display:flex;gap:16px;margin-bottom:20px">
+            <select id="sim-org-select" style="flex:1;padding:10px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);"></select>
+            <button class="btn btn-outline" id="btn-toggle-sim" onclick="toggleSimulation()">▶ Start Simulation</button>
+          </div>
+          <div id="sim-terminal" style="background:#000;color:#0f0;font-family:monospace;padding:16px;height:400px;overflow-y:auto;border-radius:8px;border:1px solid #333;">
+            > SYSTEM IDLE...
+          </div>
+        </div>
       </div>
     </div>
 

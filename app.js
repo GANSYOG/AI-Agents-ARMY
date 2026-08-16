@@ -221,7 +221,9 @@ function renderAgents() {
         </td>
         <td style="color:var(--text-secondary);font-size:13px">${a.org || 'N/A'}</td>
         <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
-        <td style="font-size:12px;color:var(--text-muted)">${(a.capabilities || []).length} tools</td>
+        <td style="font-size:12px;color:var(--text-muted)">
+          ${(a.capabilities || []).map(c => '<span class="badge badge-blue" style="margin:2px;font-size:10px;">'+c+'</span>').join('')}
+        </td>
         <td>
           <div class="table-actions">
             <button class="btn btn-outline btn-sm" onclick="cloneAgent('${a.id}','${a.name}')" title="Clone">📋</button>
@@ -509,3 +511,111 @@ document.querySelectorAll('.nav-item[data-tab]').forEach(item => {
   await refreshAll();
   addLog(`🟢 System online — ${state.templates.length} sector templates loaded`, 'success');
 })();
+
+// ============================================
+// SIMULATION & COMPANY HIRING LOGIC
+// ============================================
+
+async function hireCompany() {
+  const name = document.getElementById('new-company-name').value;
+  if (!name) return alert('Enter a company name');
+
+  // Pick a random sector for the new company
+  const sectors = Object.keys(state.templates.length ? state.templates : SECTOR_ICONS);
+  const randomSector = state.templates[Math.floor(Math.random() * state.templates.length)]?.sector || 'yoga_wellness';
+
+  const res = await apiFetch('/api/orgs/hire', {
+    method: 'POST',
+    body: JSON.stringify({ name, sector: randomSector })
+  });
+
+  if (res && res.org) {
+    addLog(`✅ Hired Company: ${name} in sector ${randomSector}`, 'success');
+    document.getElementById('new-company-name').value = '';
+    await fetchAgents(); // Refresh orgs
+    renderSimOrgSelect();
+  }
+}
+
+function renderSimOrgSelect() {
+  const sel = document.getElementById('sim-org-select');
+  if (sel) {
+    sel.innerHTML = state.orgs.map(o => `<option value="${o.id}">${o.name}</option>`).join('');
+  }
+}
+
+let simInterval = null;
+let simRunning = false;
+
+function toggleSimulation() {
+  const btn = document.getElementById('btn-toggle-sim');
+  const orgId = document.getElementById('sim-org-select').value;
+  if (!orgId) return alert('No company selected to simulate.');
+
+  simRunning = !simRunning;
+
+  if (simRunning) {
+    btn.textContent = '⏸ Pause Simulation';
+    btn.classList.add('btn-primary');
+    btn.classList.remove('btn-outline');
+    appendSimLog(`[SYSTEM] Simulation started for ORG: ${orgId}...`, '#0ff');
+
+    simInterval = setInterval(() => simulateAgentAction(orgId), 3000);
+  } else {
+    btn.textContent = '▶ Start Simulation';
+    btn.classList.add('btn-outline');
+    btn.classList.remove('btn-primary');
+    appendSimLog(`[SYSTEM] Simulation paused.`, '#f00');
+    clearInterval(simInterval);
+  }
+}
+
+function simulateAgentAction(orgId) {
+  const orgAgents = state.agents.filter(a => a.orgId === orgId);
+  if (!orgAgents.length) {
+    appendSimLog(`[WARNING] No agents found in this org. Try activating a sector template first!`, '#fa0');
+    return;
+  }
+
+  const agent = orgAgents[Math.floor(Math.random() * orgAgents.length)];
+  const tools = agent.capabilities || ['email_send', 'whatsapp_send', 'database_query'];
+  const tool = tools[Math.floor(Math.random() * tools.length)];
+
+  const actions = {
+    whatsapp_lead_followup: "sent WhatsApp follow-up to Lead #8492",
+    email_lead_welcome: "sent Welcome Email to new signup",
+    whatsapp_send: "broadcasted update via WhatsApp",
+    booking_create: "created calendar booking for 2:00 PM tomorrow",
+    booking_cancel: "processed cancellation request",
+    booking_upcoming: "checked upcoming schedule (3 appointments)",
+    whatsapp_booking_reminder: "sent 24hr reminder to Client X",
+    payment_create_link: "generated Razorpay payment link (₹2999)",
+    payment_create_subscription: "activated monthly auto-debit subscription",
+    whatsapp_payment_confirm: "sent payment receipt via WhatsApp",
+    email_send: "dispatched marketing email sequence",
+    database_query: "queried Vector DB for context"
+  };
+
+  const actionText = actions[tool] || `executed tool: ${tool}`;
+  const timestamp = new Date().toLocaleTimeString();
+
+  appendSimLog(`[${timestamp}] 🤖 ${agent.name} (${agent.type}): ${actionText}`, '#0f0');
+}
+
+function appendSimLog(msg, color) {
+  const term = document.getElementById('sim-terminal');
+  if (!term) return;
+  const div = document.createElement('div');
+  div.style.color = color;
+  div.style.marginBottom = '4px';
+  div.textContent = msg;
+  term.appendChild(div);
+  term.scrollTop = term.scrollHeight;
+}
+
+// Hook into fetchAgents to update Sim Select
+const origFetchAgents = fetchAgents;
+fetchAgents = async function() {
+  await origFetchAgents();
+  renderSimOrgSelect();
+};
