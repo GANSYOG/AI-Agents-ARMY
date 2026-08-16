@@ -1,0 +1,23 @@
+### 1. Yoga & Wellness
+Agents: 5
+Booking Manager
+Lead Nurturer
+Revenue Agent
+Retention Specialist
+Content & Growth
+
+### 2. Real Estate
+Agents: 5
+Lead Capturer
+Buyer Qualifier
+Visit Scheduler
+Property Matcher
+Deal Closer
+
+### 3. Marketing Agencies
+Agents: 5
+Campaign Manager
+Lead Generator
+Creative Engine
+Follow-up Agent
+Analytics Tracker
